@@ -30,7 +30,7 @@ func NewServiceRegister(cxt context.Context, endpoints []string, key, val string
 
 	ser := &ServiceRegister{
 		cli: cli,
-		key: "server/" + key,
+		key: key,
 		val: val,
 		ctx: cxt,
 	}

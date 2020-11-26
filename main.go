@@ -17,9 +17,8 @@ type ServiceRegister struct {
 	ctx           context.Context
 }
 
-//NewServiceRegister 新建注册服务
-func NewServiceRegister(cxt context.Context, endpoints []string, key, val string, lease int64) (*ServiceRegister, error) {
-
+//NewEtcdClient etcd客户端创建
+func NewEtcdClient(endpoints []string) (*ServiceRegister, error) {
 	cli, err := clientv3.New(clientv3.Config{
 		Endpoints:   endpoints,
 		DialTimeout: 5 * time.Second,
@@ -30,17 +29,23 @@ func NewServiceRegister(cxt context.Context, endpoints []string, key, val string
 
 	ser := &ServiceRegister{
 		cli: cli,
-		key: key,
-		val: val,
-		ctx: cxt,
 	}
-
-	if err := ser.putKeyWithLease(lease); err != nil {
-
-		return nil, err
-	}
-
 	return ser, nil
+}
+
+//NewServiceRegister 新建注册服务
+func (s *ServiceRegister) NewServiceRegister(cxt context.Context, key string, val string, lease int64) error {
+
+	s.key = key
+	s.val = val
+	s.ctx = cxt
+
+	if err := s.putKeyWithLease(lease); err != nil {
+
+		return err
+	}
+
+	return nil
 }
 
 //设置租约

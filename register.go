@@ -9,6 +9,7 @@ import (
 //ServiceRegister 创建租约注册服务
 type ServiceRegister struct {
 	cli     *clientv3.Client
+	kv      clientv3.KV
 	leaseID clientv3.LeaseID
 
 	keepAliveChan <-chan *clientv3.LeaseKeepAliveResponse
@@ -27,8 +28,11 @@ func NewEtcdClient(endpoints []string) (*ServiceRegister, error) {
 		return nil, err
 	}
 
+	kv := clientv3.NewKV(cli)
+
 	ser := &ServiceRegister{
 		cli: cli,
+		kv:  kv,
 	}
 	return ser, nil
 }

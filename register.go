@@ -3,7 +3,6 @@ package etcd
 import (
 	"context"
 	"go.etcd.io/etcd/clientv3"
-	"time"
 )
 
 //ServiceRegister 创建租约注册服务
@@ -17,24 +16,15 @@ type ServiceRegister struct {
 	ctx           context.Context
 }
 
-//NewEtcdClient etcd客户端创建
-func NewEtcdClient(endpoints []string) (*ServiceRegister, error) {
-	cli, err := clientv3.New(clientv3.Config{
-		Endpoints:   endpoints,
-		DialTimeout: 5 * time.Second,
-	})
-	if err != nil {
-		return nil, err
-	}
+//NewServiceRegister 新建注册服务
+func (s *ServiceRegister) NewServiceRegister(cli *clientv3.Client) error {
+	s.cli = cli
 
-	ser := &ServiceRegister{
-		cli: cli,
-	}
-	return ser, nil
+	return nil
 }
 
-//NewServiceRegister 新建注册服务
-func (s *ServiceRegister) NewServiceRegister(cxt context.Context, key string, val string, lease int64) error {
+//Register 注册服务
+func (s *ServiceRegister) Register(cxt context.Context, key string, val string, lease int64) error {
 
 	s.key = key
 	s.val = val

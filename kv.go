@@ -44,7 +44,7 @@ func (k *Kv) WatchKeyByPrefix(ctx context.Context, prefix string, putFn, delFn W
 }
 
 func (k *Kv) watchKeyByPrefix(ctx context.Context, prefix string, putFn, delFn WatchPutFn) {
-	watchChan := k.cli.Watch(ctx, prefix, clientv3.WithPrefix())
+	watchChan := k.cli.Watch(ctx, prefix, clientv3.WithPrefix(), clientv3.WithPrevKV())
 
 	for response := range watchChan {
 		for _, event := range response.Events {

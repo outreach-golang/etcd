@@ -2,7 +2,6 @@ package etcd
 
 import (
 	"context"
-	"fmt"
 	"github.com/coreos/etcd/mvcc/mvccpb"
 	"go.etcd.io/etcd/clientv3"
 	"sync"
@@ -49,13 +48,12 @@ func (k *Kv) watchKeyByPrefix(ctx context.Context, prefix string, putFn, delFn W
 
 	for response := range watchChan {
 		for _, event := range response.Events {
-			fmt.Println(event.Type, 1111)
 			switch event.Type {
 			case mvccpb.PUT:
 				putFn(string(event.Kv.Key), string(event.Kv.Value))
 				break
 			case mvccpb.DELETE:
-				delFn(string(event.Kv.Key), string(event.Kv.Value))
+				delFn(string(event.Kv.Key), string(event.PrevKv.Value))
 				break
 			}
 		}

@@ -17,10 +17,12 @@ type ServiceRegister struct {
 }
 
 //NewServiceRegister 新建注册服务
-func (s *ServiceRegister) NewServiceRegister(cli *clientv3.Client) error {
-	s.cli = cli
+func NewServiceRegister(cli *clientv3.Client) *ServiceRegister {
+	sr := &ServiceRegister{
+		cli: cli,
+	}
 
-	return nil
+	return sr
 }
 
 //Register 注册服务

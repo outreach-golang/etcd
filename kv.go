@@ -49,7 +49,7 @@ func (k *Kv) watchKeyByPrefix(ctx context.Context, prefix string, putFn, delFn W
 
 	for response := range watchChan {
 		for _, event := range response.Events {
-			fmt.Println(event.Type)
+			fmt.Println(event.Type, 1111)
 			switch event.Type {
 			case mvccpb.PUT:
 				putFn(string(event.Kv.Key), string(event.Kv.Value))

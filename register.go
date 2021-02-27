@@ -83,3 +83,13 @@ func (s *ServiceRegister) Close() error {
 
 	return s.cli.Close()
 }
+
+//DeleteKey 删除Key
+func (s *ServiceRegister) DeleteKey(key string) error {
+	_, err := s.cli.Delete(context.Background(), key)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

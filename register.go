@@ -2,7 +2,7 @@ package etcd
 
 import (
 	"context"
-	"go.etcd.io/etcd/clientv3"
+	"github.com/coreos/etcd/clientv3"
 )
 
 //ServiceRegister 创建租约注册服务

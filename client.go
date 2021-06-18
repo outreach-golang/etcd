@@ -2,7 +2,7 @@ package etcd
 
 import (
 	"crypto/tls"
-	"go.etcd.io/etcd/clientv3"
+	"github.com/coreos/etcd/clientv3"
 	"time"
 )
 

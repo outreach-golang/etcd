@@ -2,7 +2,7 @@ module github.com/outreach-golang/etcd
 
 go 1.15
 
-replace github.com/coreos/bbolt => go.etcd.io/bbolt v1.3.4
+replace github.com/coreos/bbolt => go.etcd.io/bbolt v1.3.5
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect

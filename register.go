@@ -33,6 +33,21 @@ func (s *ServiceRegister) Register(cxt context.Context, key string, val string, 
 	s.val = val
 	s.ctx = cxt
 
+	if err := s.putKeyWithLease(lease); err != nil {
+
+		return err
+	}
+
+	return nil
+}
+
+//RegisterServiceAddress 注册服务地址
+func (s *ServiceRegister) RegisterServiceAddress(cxt context.Context, key string, val string, lease int64) error {
+
+	s.key = key
+	s.val = val
+	s.ctx = cxt
+
 	//和已经注册的服务合并
 	sameService, _ := s.getTheSameService(cxt, key)
 	sameService.Ips = append(sameService.Ips, val)

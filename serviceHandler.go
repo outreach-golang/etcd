@@ -14,6 +14,7 @@ var (
 type ServiceInfo struct {
 	serviceName string
 	nodeIP      string
+	path        string
 	lease       int64
 	init        sync.Once
 	err         error
@@ -26,6 +27,7 @@ func init() {
 func newService() *ServiceInfo {
 	return &ServiceInfo{
 		nodeIP: "http://" + os.Getenv("NODE_IP"),
+		path:   "exterior-gateway/services-conf/services/",
 		lease:  30,
 		init:   sync.Once{},
 		err:    nil,
@@ -49,7 +51,7 @@ func (s *ServiceInfo) InitServiceRegister(ctx context.Context, sr *ServiceRegist
 			return
 		}
 
-		serviceName = serviceName + "." + getRandomString(12)
+		serviceName = s.path + serviceName + "." + getRandomString(12)
 
 		accessAddress := s.nodeIP + ":" + port
 

@@ -28,7 +28,7 @@ func newService() *ServiceInfo {
 	return &ServiceInfo{
 		nodeIP: "http://" + os.Getenv("NODE_IP"),
 		path:   "exterior-gateway/services-conf/services/",
-		lease:  30,
+		lease:  10,
 		init:   sync.Once{},
 		err:    nil,
 	}

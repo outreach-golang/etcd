@@ -19,7 +19,7 @@ func DefaultConf() *Config {
 	return &Config{
 		env:           "default",
 		points:        []string{"127.0.0.1:2379"},
-		needSSL:       0,
+		needSSL:       1,
 		sslServerFile: "",
 		sslKeyFile:    "",
 		caFile:        "",

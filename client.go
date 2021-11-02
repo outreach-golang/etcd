@@ -39,7 +39,7 @@ func (e *Etcd) InitEtcd(ops ...Option) error {
 
 		var tlsConfig = &tls.Config{}
 
-		if conf.env != "" && conf.needSSL == 1 {
+		if conf.env != "default" && conf.needSSL == 1 {
 
 			cert, errLkp := tls.LoadX509KeyPair(conf.dirPath+conf.sslServerFile, conf.dirPath+conf.sslKeyFile)
 			if e.err = errLkp; e.err != nil {

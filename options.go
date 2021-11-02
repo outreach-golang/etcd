@@ -3,6 +3,8 @@ package etcd
 type Option func(*Config)
 
 type Config struct {
+	//环境变量
+	env string
 	//节点
 	points []string
 	//是否需要ssl
@@ -15,11 +17,18 @@ type Config struct {
 
 func DefaultConf() *Config {
 	return &Config{
+		env:           "default",
 		points:        []string{"127.0.0.1:2379"},
 		needSSL:       0,
 		sslServerFile: "",
 		sslKeyFile:    "",
 		caFile:        "",
+	}
+}
+
+func Env(env string) Option {
+	return func(config *Config) {
+		config.env = env
 	}
 }
 

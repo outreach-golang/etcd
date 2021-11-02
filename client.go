@@ -12,10 +12,10 @@ import (
 var GEtcd *Etcd
 
 type Etcd struct {
-	init   sync.Once
-	err    error
-	cli    *clientv3.Client
-	points []string
+	Conf *Config
+	init sync.Once
+	err  error
+	cli  *clientv3.Client
 }
 
 func init() {
@@ -35,11 +35,11 @@ func (e *Etcd) InitEtcd(ops ...Option) error {
 			op(conf)
 		}
 
+		e.Conf = conf
+
 		var tlsConfig = &tls.Config{}
 
-		e.points = conf.points
-
-		if conf.needSSL == 1 {
+		if conf.env != "" && conf.needSSL == 1 {
 
 			cert, errLkp := tls.LoadX509KeyPair(conf.dirPath+conf.sslServerFile, conf.dirPath+conf.sslKeyFile)
 			if e.err = errLkp; e.err != nil {
@@ -60,7 +60,7 @@ func (e *Etcd) InitEtcd(ops ...Option) error {
 			tlsConfig = nil
 		}
 
-		e.cli, e.err = newEtcdClient(e.points, tlsConfig)
+		e.cli, e.err = newEtcdClient(conf.points, tlsConfig)
 	})
 
 	return e.err

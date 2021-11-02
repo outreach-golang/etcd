@@ -21,9 +21,9 @@ func DefaultConf() *Config {
 		points:        []string{"127.0.0.1:2379"},
 		needSSL:       1,
 		dirPath:       "./configs/default/",
-		sslServerFile: "",
-		sslKeyFile:    "",
-		caFile:        "",
+		sslServerFile: "server.pem",
+		sslKeyFile:    "server-key.pem",
+		caFile:        "ca.pem",
 	}
 }
 

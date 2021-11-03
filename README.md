@@ -19,9 +19,9 @@ if err = etcd.GEtcd.InitEtcd(
    //环境变量值（DefaultEV,TestingEV,ReleaseEV,ProductionEV）
    etcd.EnvVar(etcd.DefaultEV),
    //etcd地址
-   etcd.Points([]string{viper.GetString("etcd_address")}),
+   etcd.Points([]string{"127.0.0.1:2379}),
    //k8s密钥地址
-   etcd.DirPath("./configs/"+viper.GetString("e")+"/k8s_keys/"),
+   etcd.DirPath("./configs/default/k8s_keys/"),
 ); err != nil {
     log.Fatal(err.Error())
 }

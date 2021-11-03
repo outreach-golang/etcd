@@ -16,8 +16,8 @@ replace (
 import "github.com/outreach-golang/etcd"
 
 if err = etcd.GEtcd.InitEtcd(
-   //环境变量值（testing,release,production）
-   etcd.EnvVar(viper.GetString("e")),
+   //环境变量值（DefaultEV,TestingEV,ReleaseEV,ProductionEV）
+   etcd.EnvVar(etcd.DefaultEV),
    //etcd地址
    etcd.Points([]string{viper.GetString("etcd_address")}),
    //k8s密钥地址

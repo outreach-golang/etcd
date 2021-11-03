@@ -1,10 +1,19 @@
 package etcd
 
+type EnvVar string
+
+const (
+	DefaultEV    EnvVar = "default"
+	TestingEV    EnvVar = "testing"
+	ReleaseEV    EnvVar = "release"
+	ProductionEV EnvVar = "production"
+)
+
 type Option func(*Config)
 
 type Config struct {
 	//环境变量
-	env string
+	env EnvVar
 	//节点
 	points []string
 	//是否需要ssl
@@ -17,7 +26,7 @@ type Config struct {
 
 func DefaultConf() *Config {
 	return &Config{
-		env:           "default",
+		env:           DefaultEV,
 		points:        []string{"127.0.0.1:2379"},
 		needSSL:       1,
 		dirPath:       "./configs/default/",
@@ -27,7 +36,7 @@ func DefaultConf() *Config {
 	}
 }
 
-func Env(env string) Option {
+func Env(env EnvVar) Option {
 	return func(config *Config) {
 		config.env = env
 	}

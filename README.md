@@ -9,7 +9,7 @@ replace (
 )
 ```
 
-### 导入etcd包
+### 安装包
 `go get github.com/outreach-golang/etcd`
 ### 初始化etcd客户端
 ```

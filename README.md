@@ -33,8 +33,8 @@ etcdRegister := etcd.NewServiceRegister(etcd.GEtcd.GetCli())
 if err = etcd.ServiceRegisterHandler.InitServiceRegister(
     context.Background(),
     etcdRegister,
-    viper.GetString("server.AppName"),
-    viper.GetString("server.port")); err != nil {
+    "server.AppName",
+    "server.port"); err != nil {
     log.Fatal(err.Error())
 }
 ```

@@ -1,2 +1,40 @@
-# etcd
-etcd注册中心操作库
+### 在go.mod 里添加引用
+```
+因为etcd和grpc本身的兼容性问题，所以需要添加某些包的替换
+
+replace (
+    github.com/coreos/bbolt => go.etcd.io/bbolt v1.3.5
+    github.com/coreos/go-systemd => github.com/coreos/go-systemd/v22 v22.0.0
+    google.golang.org/grpc => google.golang.org/grpc v1.26.0
+)
+```
+
+### 导入etcd包
+`go get github.com/outreach-golang/etcd`
+### 初始化etcd客户端
+```
+import "github.com/outreach-golang/etcd"
+
+if err = etcd.GEtcd.InitEtcd(
+   //环境变量值（testing,release,production）
+   etcd.EnvVar(viper.GetString("e")),
+   //etcd地址
+   etcd.Points([]string{viper.GetString("etcd_address")}),
+   //k8s密钥地址
+   etcd.DirPath("./configs/"+viper.GetString("e")+"/k8s_keys/"),
+); err != nil {
+    log.Fatal(err.Error())
+}
+```
+### 将服务注册到etcd
+```
+etcdRegister := etcd.NewServiceRegister(etcd.GEtcd.GetCli())
+
+if err = etcd.ServiceRegisterHandler.InitServiceRegister(
+    context.Background(),
+    etcdRegister,
+    viper.GetString("server.AppName"),
+    viper.GetString("server.port")); err != nil {
+    log.Fatal(err.Error())
+}
+```

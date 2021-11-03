@@ -20,12 +20,11 @@ if err = etcd.GEtcd.InitEtcd(
    etcd.EnvVar(etcd.DefaultEV),
    //etcd地址
    etcd.Points([]string{"127.0.0.1:2379"}),
-   //ssl、ca等证书存放地址
-   etcd.DirPath("./configs/default/k8s_keys/"),
 ); err != nil {
     log.Fatal(err.Error())
 }
 ```
+> 支持SSL配置，可自行加相应配置项即可
 ### 将服务注册到etcd
 ```
 etcdRegister := etcd.NewServiceRegister(etcd.GEtcd.GetCli())

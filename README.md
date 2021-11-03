@@ -20,7 +20,7 @@ if err = etcd.GEtcd.InitEtcd(
    etcd.EnvVar(etcd.DefaultEV),
    //etcd地址
    etcd.Points([]string{"127.0.0.1:2379"}),
-   //k8s密钥地址
+   //ssl、ca等证书存放地址
    etcd.DirPath("./configs/default/k8s_keys/"),
 ); err != nil {
     log.Fatal(err.Error())

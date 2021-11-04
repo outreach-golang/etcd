@@ -27,7 +27,7 @@ func NewKv(cli *clientv3.Client) *Kv {
 }
 
 //WatchKeyByPrefix 根据前缀监听kv
-func (k *Kv) WatchKeyByPrefix(ctx context.Context, prefixes []string, putFn, delFn []WatchPutFn) error {
+func (k *Kv) WatchKeyByPrefix(ctx context.Context, prefixes []string, putFn []WatchPutFn, delFn []WatchDelFn) error {
 
 	if len(prefixes) != len(putFn) || len(prefixes) != len(delFn) || len(putFn) != len(delFn) {
 		return errors.New("监听key数量与处理函数数量不相等")
@@ -51,7 +51,7 @@ func (k *Kv) WatchKeyByPrefix(ctx context.Context, prefixes []string, putFn, del
 
 }
 
-func (k *Kv) watchKeyByPrefix(ctx context.Context, prefix string, putFn, delFn WatchPutFn) {
+func (k *Kv) watchKeyByPrefix(ctx context.Context, prefix string, putFn WatchPutFn, delFn WatchDelFn) {
 	watchChan := k.cli.Watch(ctx, prefix, clientv3.WithPrefix(), clientv3.WithPrevKV())
 
 	for response := range watchChan {

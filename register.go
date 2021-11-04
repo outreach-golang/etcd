@@ -3,7 +3,6 @@ package etcd
 import (
 	"context"
 	"github.com/coreos/etcd/clientv3"
-	jsoniter "github.com/json-iterator/go"
 )
 
 //ServiceRegister 创建租约注册服务
@@ -39,49 +38,6 @@ func (s *ServiceRegister) Register(cxt context.Context, key string, val string, 
 	}
 
 	return nil
-}
-
-//RegisterServiceAddress 注册服务地址
-func (s *ServiceRegister) RegisterServiceAddress(cxt context.Context, key string, val string, lease int64) error {
-
-	s.key = key
-	s.val = val
-	s.ctx = cxt
-
-	//和已经注册的服务合并
-	sameService, _ := s.getTheSameService(cxt, key)
-	sameService.Ips = append(sameService.Ips, val)
-	//去掉重复的服务
-	sameService.Ips = removeDuplicationMap(sameService.Ips)
-
-	s.val, _ = jsoniter.MarshalToString(&sameService)
-
-	if err := s.putKeyWithLease(lease); err != nil {
-
-		return err
-	}
-
-	return nil
-}
-
-type registerService struct {
-	Ips []string `json:"ips"`
-}
-
-//检查是否已经存在相同服务
-func (s *ServiceRegister) getTheSameService(cxt context.Context, key string) (registerService, error) {
-	rs := registerService{}
-
-	response, err := s.cli.KV.Get(cxt, key)
-	if err != nil {
-		return rs, err
-	}
-
-	for _, kv := range response.Kvs {
-		_ = jsoniter.Unmarshal(kv.Value, &rs)
-	}
-
-	return rs, nil
 }
 
 //设置租约

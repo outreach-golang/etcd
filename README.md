@@ -1,3 +1,5 @@
+### 安装包
+`go get github.com/outreach-golang/etcd`
 ### 在go.mod 里添加引用
 ```
 因为etcd和grpc本身的兼容性问题，所以需要添加某些包的替换
@@ -8,9 +10,6 @@ replace (
     google.golang.org/grpc => google.golang.org/grpc v1.26.0
 )
 ```
-
-### 安装包
-`go get github.com/outreach-golang/etcd`
 ### 初始化etcd客户端
 ```
 import "github.com/outreach-golang/etcd"

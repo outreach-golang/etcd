@@ -2,6 +2,7 @@ package etcd
 
 import (
 	"context"
+	"errors"
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/mvcc/mvccpb"
 	"sync"
@@ -26,18 +27,25 @@ func NewKv(cli *clientv3.Client) *Kv {
 }
 
 //WatchKeyByPrefix 根据前缀监听kv
-func (k *Kv) WatchKeyByPrefix(ctx context.Context, prefix string, putFn, delFn WatchPutFn) error {
+func (k *Kv) WatchKeyByPrefix(ctx context.Context, prefixes []string, putFn, delFn []WatchPutFn) error {
 
-	response, err := k.cli.Get(ctx, prefix, clientv3.WithPrefix())
-	if err != nil {
-		return err
+	if len(prefixes) != len(putFn) || len(prefixes) != len(delFn) || len(putFn) != len(delFn) {
+		return errors.New("监听key数量与处理函数数量不相等")
 	}
 
-	for _, kv := range response.Kvs {
-		k.setKv(string(kv.Key), string(kv.Value))
-	}
+	for index, prefix := range prefixes {
+		response, err := k.cli.Get(ctx, prefix, clientv3.WithPrefix())
+		if err != nil {
+			return err
+		}
 
-	go k.watchKeyByPrefix(ctx, prefix, putFn, delFn)
+		for _, kv := range response.Kvs {
+			k.setKv(string(kv.Key), string(kv.Value))
+		}
+
+		go k.watchKeyByPrefix(ctx, prefix, putFn[index], delFn[index])
+
+	}
 
 	return nil
 
